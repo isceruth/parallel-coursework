@@ -1,1 +1,3 @@
-Parallel programming coursework. Description later.
+Parallel programming coursework
+
+Used RMI, PostgreSQL, RabbitMQ.
