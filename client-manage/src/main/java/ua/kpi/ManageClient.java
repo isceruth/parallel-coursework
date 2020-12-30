@@ -40,12 +40,13 @@ public class ManageClient {
 
             switch (command) {
                 case "r":
-                    System.out.println(getRoomsReportService
+                    System.out.println("[CLIENT] - Room report: " + getRoomsReportService
                             .getRoomsReport(new GetRoomsRequest(response.getAccountData())));
                     break;
                 case "e":
+                    System.out.print("[CLIENT] - Enter room number you want to evict: ");
                     int roomNum = scanner.nextInt();
-                    System.out.println(evictRoomService
+                    System.out.println("[CLIENT] - " + evictRoomService
                             .evictRoom(new ManageRoomRequest(response.getAccountData(), roomNum)));
                     break;
                 default:

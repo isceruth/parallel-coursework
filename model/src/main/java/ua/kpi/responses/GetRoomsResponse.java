@@ -20,8 +20,6 @@ public class GetRoomsResponse implements Serializable {
 
     @Override
     public String toString() {
-        return "GetRoomsResponse{" +
-                "roomIds=" + Arrays.toString(roomIds) +
-                '}';
+        return Arrays.toString(roomIds);
     }
 }

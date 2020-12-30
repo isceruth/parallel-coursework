@@ -19,8 +19,6 @@ public class ManageRoomResponse implements Serializable {
 
     @Override
     public String toString() {
-        return "ManageRoomResponse{" +
-                "message='" + message + '\'' +
-                '}';
+        return message;
     }
 }

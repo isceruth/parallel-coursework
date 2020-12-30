@@ -40,12 +40,13 @@ public class BookClient {
 
             switch (command) {
                 case "r":
-                    System.out.println(getRoomsService
+                    System.out.println("[CLIENT] - Available rooms: " + getRoomsService
                             .getAvailableRooms(new GetRoomsRequest(response.getAccountData())));
                     break;
                 case "b":
+                    System.out.print("[CLIENT] - Enter room number you want to book: ");
                     int roomNum = scanner.nextInt();
-                    System.out.println(bookRoomService
+                    System.out.println("[CLIENT] - " + bookRoomService
                             .bookRoom(new ManageRoomRequest(response.getAccountData(), roomNum)));
                     break;
                 default:
