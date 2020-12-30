@@ -24,6 +24,8 @@ public class GetRoomsReportServiceImpl extends UnicastRemoteObject implements Ge
     @Override
     public GetRoomsReportResponse getRoomsReport(GetRoomsRequest request) {
         messageSender.sendMessage(buildServerAction(request));
+        System.out.println("[SERVER] - [ROOM SERVICE] - User " + request.getAccountData().getUuid()
+                + " requested rooms report");
         return new GetRoomsReportResponse(roomLocator.getRooms());
     }
 

@@ -19,32 +19,53 @@ public class BookClient {
     public static final String GET_ROOMS_SERVICE_NAME = "GetRoomsService";
     public static final String BOOK_ROOM_SERVICE_NAME = "BookRoomService";
 
+    public static NewUserService newUserService;
+    public static GetRoomsService getRoomsService;
+    public static BookRoomService bookRoomService;
+
     public static void main(String[] args) throws RemoteException, NotBoundException {
         Scanner scanner = new Scanner(System.in);
+        registerServices();
+
+        NewUserRequest request = registerOnServer(scanner);
+        NewUserResponse response = newUserService.registerNewUser(request);
+
+        System.out.println("[CLIENT] - Successfully logged in to system as: " + request.getFirstName() + " "
+                + request.getLastName());
+
+        while (true) {
+            System.out.println("[CLIENT] - Type 'r' if you want to see available rooms " +
+                    "and 'b' if you need to book a room!");
+            String command = scanner.nextLine();
+
+            switch (command) {
+                case "r":
+                    System.out.println(getRoomsService
+                            .getAvailableRooms(new GetRoomsRequest(response.getAccountData())));
+                    break;
+                case "b":
+                    int roomNum = scanner.nextInt();
+                    System.out.println(bookRoomService
+                            .bookRoom(new ManageRoomRequest(response.getAccountData(), roomNum)));
+                    break;
+                default:
+                    System.out.println("[CLIENT] - Unknown command, please try again!");
+            }
+        }
+    }
+
+    private static NewUserRequest registerOnServer(Scanner scanner) {
         System.out.print("Enter your first name: ");
         String firstName = scanner.nextLine();
         System.out.print("Enter your last name: ");
         String lastName = scanner.nextLine();
-        NewUserRequest request = new NewUserRequest(firstName, lastName);
+        return new NewUserRequest(firstName, lastName);
+    }
 
+    private static void registerServices() throws RemoteException, NotBoundException {
         Registry registry = LocateRegistry.getRegistry(1099);
-        NewUserService newUserService = (NewUserService) registry.lookup(NEW_USER_SERVICE_NAME);
-        GetRoomsService getRoomsService = (GetRoomsService) registry.lookup(GET_ROOMS_SERVICE_NAME);
-        BookRoomService bookRoomService = (BookRoomService) registry.lookup(BOOK_ROOM_SERVICE_NAME);
-
-        NewUserResponse response = newUserService.registerNewUser(request);
-        System.out.println("Got response: " + response);
-
-        while (true) {
-            String command = scanner.nextLine();
-            if (command.equals("r")) {
-                System.out.println(getRoomsService.getAvailableRooms(new GetRoomsRequest(response.getAccountData())));
-            }
-
-            if (command.equals("b")) {
-                int roomNum = scanner.nextInt();
-                System.out.println(bookRoomService.bookRoom(new ManageRoomRequest(response.getAccountData(), roomNum)));
-            }
-        }
+        newUserService = (NewUserService) registry.lookup(NEW_USER_SERVICE_NAME);
+        getRoomsService = (GetRoomsService) registry.lookup(GET_ROOMS_SERVICE_NAME);
+        bookRoomService = (BookRoomService) registry.lookup(BOOK_ROOM_SERVICE_NAME);
     }
 }

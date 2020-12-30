@@ -37,6 +37,7 @@ public class MessageSender {
         try {
             String json = objectMapper.writeValueAsString(message);
             channel.basicPublish("", QUEUE_NAME, null, json.getBytes(StandardCharsets.UTF_8));
+            System.out.println("[MSG SENDER] - Sent a message to queue...");
         } catch (IOException e) {
             e.printStackTrace();
         }

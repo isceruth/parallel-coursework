@@ -24,6 +24,8 @@ public class BookRoomServiceImpl extends UnicastRemoteObject implements BookRoom
     @Override
     public ManageRoomResponse bookRoom(ManageRoomRequest request) {
         messageSender.sendMessage(buildServerAction(request));
+        System.out.println("[SERVER] - [ROOM SERVICE] - User " + request.getAccountData().getUuid()
+                + " booked room " + request.getRoomId());
         return new ManageRoomResponse(roomLocator.bookRoom(request.getRoomId(), request.getAccountData()));
     }
 

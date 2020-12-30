@@ -24,6 +24,8 @@ public class GetRoomsServiceImpl extends UnicastRemoteObject implements GetRooms
     @Override
     public GetRoomsResponse getAvailableRooms(GetRoomsRequest request) {
         messageSender.sendMessage(buildServerAction(request));
+        System.out.println("[SERVER] - [ROOM SERVICE] - User " + request.getAccountData().getUuid()
+                + " requested available rooms");
         return new GetRoomsResponse(roomLocator.getAvailableRooms());
     }
 

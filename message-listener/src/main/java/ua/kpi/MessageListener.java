@@ -20,14 +20,13 @@ public class MessageListener {
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
-
         channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-        System.out.println("Created queue, waiting for messages...");
+        System.out.println("[MSG LISTENER] - Created queue, waiting for messages...");
 
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
             db.insertRecord(message);
-            System.out.println("Received: " + message);
+            System.out.println("[MSG LISTENER] - Received message: " + message);
         };
         channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> {});
     }

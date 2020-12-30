@@ -24,6 +24,8 @@ public class EvictRoomServiceImpl extends UnicastRemoteObject implements EvictRo
     @Override
     public ManageRoomResponse evictRoom(ManageRoomRequest request) {
         messageSender.sendMessage(buildServerAction(request));
+        System.out.println("[SERVER] - [ROOM SERVICE] - User " + request.getAccountData().getUuid()
+                + " evicted room " + request.getRoomId());
         return new ManageRoomResponse(roomLocator.evictRoom(request.getRoomId()));
     }
 
