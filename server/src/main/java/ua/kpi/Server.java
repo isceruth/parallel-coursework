@@ -1,5 +1,6 @@
 package ua.kpi;
 
+import ua.kpi.internal.MessageSender;
 import ua.kpi.internal.RoomLocator;
 import ua.kpi.services.*;
 
@@ -13,16 +14,18 @@ public class Server {
         System.out.println("[SERVER] - Starting server...");
 
         RoomLocator roomLocator = new RoomLocator();
+        MessageSender messageSender = new MessageSender();
         roomLocator.init();
+        messageSender.init();
 
         try {
             Registry registry = LocateRegistry.createRegistry(1099);
 
-            NewUserService newUserService = new NewUserServiceImpl();
-            GetRoomsService getRoomsService = new GetRoomsServiceImpl(roomLocator);
-            BookRoomService bookRoomService = new BookRoomServiceImpl(roomLocator);
-            EvictRoomService evictRoomService = new EvictRoomServiceImpl(roomLocator);
-            GetRoomsReportService getRoomsReportService = new GetRoomsReportServiceImpl(roomLocator);
+            NewUserService newUserService = new NewUserServiceImpl(messageSender);
+            GetRoomsService getRoomsService = new GetRoomsServiceImpl(roomLocator, messageSender);
+            BookRoomService bookRoomService = new BookRoomServiceImpl(roomLocator, messageSender);
+            EvictRoomService evictRoomService = new EvictRoomServiceImpl(roomLocator, messageSender);
+            GetRoomsReportService getRoomsReportService = new GetRoomsReportServiceImpl(roomLocator, messageSender);
 
             registry.rebind(NewUserService.SERVICE_NAME, newUserService);
             registry.rebind(GetRoomsService.SERVICE_NAME, getRoomsService);

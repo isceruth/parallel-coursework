@@ -14,12 +14,12 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
 
-public class App {
+public class BookClient {
     public static final String NEW_USER_SERVICE_NAME = "NewUserService";
     public static final String GET_ROOMS_SERVICE_NAME = "GetRoomsService";
     public static final String BOOK_ROOM_SERVICE_NAME = "BookRoomService";
 
-    public static void main(String[] args) throws RemoteException, NotBoundException, InterruptedException {
+    public static void main(String[] args) throws RemoteException, NotBoundException {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your first name: ");
         String firstName = scanner.nextLine();
